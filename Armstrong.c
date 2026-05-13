@@ -1,70 +1,77 @@
 #include <stdio.h>
-// Program to verify Armstrong number and also print Armstrong numbers in a given range.
-// TriTea@BlackPharaoh
+#include <math.h>
+//Program to check if a number is an Armstrong number and to print all Armstrong numbers in a given range.
+//TriTea@blackpharaoh
 
-int main()
-{
+// Function to count digits in a number
+int countDigits(int n) {
+    int count = 0;
+    if (n == 0) return 1;
+    while (n != 0) {
+        n /= 10;
+        count++;
+    }
+    return count;
+}
+
+// Function to check if a number is an Armstrong number
+int isArmstrong(int n) {
+    int sum = 0, temp = n, r;
+    int digits = countDigits(n);
+    
+    while (temp != 0) {
+        r = temp % 10;
+        // Use pow() for dynamic digit support. 
+        // We add 0.5 before casting to int to avoid floating point precision errors.
+        sum += (int)(pow(r, digits) + 0.5);
+        temp /= 10;
+    }
+    return (sum == n);
+}
+
+int main() {
     int ch;
-    do
-    {
-        printf("Enter your choice:\n1. Verify Armstrong number\n2. Print Armstrong number in a given range:\n");
+    do {
+        printf("\nEnter your choice:\n1. Verify Armstrong number\n2. Print Armstrong numbers in a range\n3. Exit\n");
         scanf("%d", &ch);
-        switch (ch)
-        {
-        case 1:
-        {
-            printf("Enter a number to verify:\n");
-            int num;
-            scanf("%d", &num);
-            int sum = 0, temp, r;
-            temp = num;
-            while (temp != 0) // Logic to check for Armstrong Number.
-            {
-                r = temp % 10;    // Take the last number
-                sum += r * r * r; // Multiply to find cube and sum them up
-                temp = temp / 10;
-            }
-            if (sum == num) // Check the equality.
-                printf("%d is an Armstrong Number\n", num);
-            else
-                printf("%d is not an Armstrong Number\n", num);
-            break;
-        }
-        case 2:
-        {
-            printf("Enter the range to find the number:\n");
-            int f, l;
-            scanf("%d %d", &f, &l);
-            int i, sum = 0, temp, r;
-            if (f > l)
-            {
-                printf("Range is invalid!\n"); // TO CHECK FOR THE CORRECT RANGE LIMIT.
+
+        switch (ch) {
+            case 1: {
+                printf("Enter a number to verify: ");
+                int num;
+                scanf("%d", &num);
+                
+                if (isArmstrong(num))
+                    printf("%d is an Armstrong Number\n", num);
+                else
+                    printf("%d is not an Armstrong Number\n", num);
                 break;
             }
-            for (i = f; i <= l; i++)
-            {
-                sum = 0; // To reset the sum value after each iteration.
-                temp = i;
-                while (temp != 0) // Logic loop to check for Armstrong Number.
-                {
-                    r = temp % 10;    // Take the last number
-                    sum += r * r * r; // Multiply to find cube and sum them up
-                    temp = temp / 10;
+            case 2: {
+                int f, l;
+                printf("Enter the range (From To): ");
+                scanf("%d %d", &f, &l);
+                
+                if (f > l) {
+                    printf("Range is invalid!\n");
+                } else {
+                    printf("Armstrong numbers: ");
+                    for (int i = f; i <= l; i++) {
+                        if (isArmstrong(i)) {
+                            printf("%d ", i);
+                        }
+                    }
+                    printf("\n");
                 }
-                if (sum == i)
-                {
-                    printf("%d ", i);
-                }
+                break;
             }
-            printf("\n");
-            break;
+            case 3:
+                return 0;
+            default:
+                printf("Invalid Input!\n");
         }
-        default:
-        {
-            printf("Invalid Input!\n");
-        }
-        }
-        printf("Enter 1 to continue or press any key to exit!\n");
+
+        printf("\nEnter 1 to continue or any other key to exit: ");
         scanf("%d", &ch);
     } while (ch == 1);
 
