@@ -1,4 +1,4 @@
-// Program to find the Majority Number in an array using Selection Sorting and Binary Searching.
+// Program to find the majority number in an array.
 // TriTea@blackpharaoh
 
 #include <stdio.h>
@@ -12,12 +12,12 @@ int main()
     printf("Enter the elements of array:");
     for (int i = 0; i < n; i++)
     {
-        printf("Element %d", i + 1);
+        printf("Elements %d", i + 1);
         scanf("%d", &arr[i]);
     }
 
-    // Applying Selection Sorting.
-    for (int i = 0; i < n; i++)
+    // Using selection sorting.
+    for (int i = 0; i < n - 1; i++)
     {
         int md = i;
         for (int j = i + 1; j < n; j++)
@@ -31,10 +31,12 @@ int main()
     }
 
     int cd = *(arr + (n / 2));
-    int low = 0, high = n - 1, mid;
+    int low, high, mid;
     int f = -1, l = -1;
 
-    // Applying Binary Search for first occurrence.
+    // Using Binary searching ,method.
+    low = 0;
+    high = n - 1;
     while (low <= high)
     {
         mid = low + (high - low) / 2;
@@ -44,44 +46,33 @@ int main()
             high = mid - 1;
         }
         else if (*(arr + mid) > cd)
-        {
             high = mid - 1;
-        }
         else
-        {
             low = mid + 1;
-        }
     }
 
     low = 0;
-    high = n - 1; // Resetting the values.
-    // Binary search for Last occurrence.
+    high = n - 1; // Resetting the values
+    // Binary Search for last occurrence.
     while (low <= high)
     {
         mid = low + (high - low) / 2;
         if (*(arr + mid) == cd)
         {
             l = mid;
-            low = mid + 1;
-        }
-        else if (*(arr + mid) > cd)
-        {
             high = mid - 1;
         }
+        else if (*(arr + mid) > cd)
+            high = mid - 1;
         else
-        {
             low = mid + 1;
-        }
     }
 
     int ct = l - f + 1;
     if (ct > n / 2)
-    {
-        printf("\n The Majority element found is: %d (appears %d times)\n", cd, ct);
-    }
+        printf("\nThe majority element is: %d (appears %d times)\n", cd, ct);
     else
-    {
-        printf("There is no majority element.");
-    }
+        printf("\nThere is no majority element in this array.\n");
+
     return 0;
 }
